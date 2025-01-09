@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SECU1 - Examen Captcha Web</title>
+    <script type="text/javascript" src="https://b82b1763d1c3.ef7ef6cc.eu-west-3.captcha.awswaf.com/b82b1763d1c3/jsapi.js" defer></script>
+    <script src="config.js" defer></script>
+    <script src="script.js" defer></script>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        #output { margin-top: 20px; max-height: 300px; overflow-y: auto; font-family: monospace; }
+    </style>
+</head>
+<body>
+<h1>Générateur de Séquence</h1>
+<form id="numberForm">
+    <label for="numberInput">Entrez un nombre entre 1 et 1000 :</label>
+    <input type="number" id="numberInput" min="1" max="1000" required>
+    <button type="submit">Lancer</button>
+</form>
+
+<div id="output" style="display: none;"></div>
+
+<div id="my-captcha-container" style="margin-top: 20px; display: none;">
+    <!-- Captcha widget sera affiché ici -->
+</div>
+</body>
+</html>
