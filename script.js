@@ -3,6 +3,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const apiKey = window.WAF_API_KEY;
     const wafUrl = window.WAF_URL;
 
+    if (!apiKey || !wafUrl) {
+        console.error("Les variables WAF_API_KEY et WAF_URL ne sont pas définies correctement.");
+        alert("Configuration manquante. Veuillez vérifier les variables d'environnement.");
+        return;
+    }
+
     const form = document.getElementById('numberForm');
     const outputDiv = document.getElementById('output');
     const captchaContainer = document.getElementById('my-captcha-container');
@@ -40,14 +46,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 addOutputLine(outputDiv, `${index}. OK`);
                 return true;
             } else if (response.status === 403) {
-                // CAPTCHA détecté
                 return await showCaptcha(outputDiv, index);
+            } else {
+                addOutputLine(outputDiv, `${index}. Erreur ${response.status}`);
             }
         } catch (error) {
             console.error('Erreur lors de la requête :', error);
+            addOutputLine(outputDiv, `${index}. Erreur de requête`);
         }
         return false;
     }
+    
 
     function showCaptcha(outputDiv, index) {
         return new Promise((resolve) => {
@@ -68,17 +77,19 @@ document.addEventListener("DOMContentLoaded", () => {
                         resolve(true); // Continuer la séquence
                     }).catch((error) => {
                         console.error('Erreur lors de la résolution du CAPTCHA :', error);
+                        captchaContainer.style.display = 'none'; // Cacher le conteneur CAPTCHA
                         resolve(false); // Arrêter la séquence
                     });
                 },
                 onError: (error) => {
                     console.error('Erreur avec le CAPTCHA :', error);
+                    captchaContainer.style.display = 'none'; // Toujours cacher le CAPTCHA
                     resolve(false); // Arrêter la séquence
                 },
             });
         });
     }
-
+    
     function addOutputLine(container, text) {
         console.log(`Ajout de ligne dans l'output : ${text}`);
         container.innerHTML += `${text}<br>`;
